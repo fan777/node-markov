@@ -1,5 +1,6 @@
 const fs = require('fs');
 const axios = require('axios');
+const { stripHtml } = require('string-strip-html');
 
 /** Command-line tool to generate Markov text. */
 const { MarkovMachine } = require('./markov');
@@ -18,7 +19,7 @@ function handleFile(path) {
 async function handleUrl(url) {
   try {
     let response = await axios.get(url);
-    handleOutput(response.data);
+    handleOutput(stripHtml(response.data).result);
   } catch (err) {
     console.error(`Error fetching ${url}: ${err}`);
     process.exit(1);
